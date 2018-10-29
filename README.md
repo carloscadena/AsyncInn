@@ -3,7 +3,7 @@ A web page that simulates the admin function for managing a hotel. This uses .NE
 
 ## Database Schema
 
-![schema](assets/SchemaAsyncInn.PNG)
+![schema](assets/SchemaAsyncInn.png)
 
 ## Database Relations
 - Room - Room layout type as an enum (studio, oneBed, twoBed). One to many relationship with Hotel Room
