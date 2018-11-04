@@ -4,6 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
+<head>
+    <link rel="stylesheet" href="~/StyleSheet.css" />
+</head>
+
 <h2>Index</h2>
 
 <p>
@@ -31,11 +35,12 @@
                 @Html.DisplayFor(modelItem => item.Amenities.ID)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { item.Amenities, item.RoomID }) |
+                @Html.ActionLink("Details", "Details", new { item.Amenities, item.RoomID }) |
+                @Html.ActionLink("Delete", "Delete", new { item.Amenities, item.RoomID })
             </td>
         </tr>
 }
     </tbody>
 </table>
+<a asp-controller="Home" asp-action="Index">Back to Dashboard</a>

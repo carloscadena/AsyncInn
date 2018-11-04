@@ -1,5 +1,7 @@
 ﻿body {
-    text-align:center;
+    width: 75%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 h1 {
@@ -19,4 +21,12 @@ li {
 
 a {
     text-decoration: none;
+}
+
+td {
+    border: 1px solid black;
+}
+
+table {
+    margin: 0 auto;
 }

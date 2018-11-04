@@ -8,10 +8,12 @@ namespace AsyncInn.Models
 {
     public class HotelRoom
     {
+        [Display(Name = "Hotel ID: ")]
         public int HotelID { get; set; }
         [Required]
-        [Display(Name = "Room #")]
+        [Display(Name = "Room #: ")]
         public int RoomNumber { get; set; }
+        [Display(Name = "Room ID: ")]
         public int RoomID { get; set; }
         [Required]
         public decimal Rate { get; set; }

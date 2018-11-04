@@ -4,22 +4,23 @@
     ViewData["Title"] = "Edit";
 }
 
+<head>
+    <link rel="stylesheet" href="~/StyleSheet.css" />
+</head>
+
 <h2>Edit</h2>
 
 <h4>RoomAmenities</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AmenitiesID" />
-            <input type="hidden" asp-for="RoomID" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="AmenitiesID" />
+    <input type="hidden" asp-for="RoomID" />
+    <div>
+        <input type="submit" value="Save" />
     </div>
-</div>
+</form>
+
 
 <div>
     <a asp-action="Index">Back to List</a>
