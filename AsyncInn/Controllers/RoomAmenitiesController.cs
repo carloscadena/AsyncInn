@@ -83,7 +83,7 @@ namespace AsyncInn.Controllers
             var roomAmenities = await _context.RoomAmenities
                 .Include(h => h.Amenities)
                 .Include(h => h.Room)
-                .FirstOrDefaultAsync(m => m.RoomID == AmenitiesID && m.RoomID == RoomID);
+                .FirstOrDefaultAsync(m => m.AmenitiesID == AmenitiesID && m.RoomID == RoomID);
             //var roomAmenities = await _context.RoomAmenities.FindAsync(id);
             if (roomAmenities == null)
             {
