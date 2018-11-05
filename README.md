@@ -1,5 +1,8 @@
 # Async Inn
-A web page that simulates the admin function for managing a hotel. This uses .NET Core and Entity Framework. 
+A web page that simulates the admin function for managing a hotel. This uses .NET Core and Entity Framework.
+
+## Deployed Site
+- https://asyncinn20181104110630.azurewebsites.net/
 
 ## Database Schema
 
