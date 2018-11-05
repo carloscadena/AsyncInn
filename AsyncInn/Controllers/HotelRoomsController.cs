@@ -7,35 +7,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AsyncInn.Data;
 using AsyncInn.Models;
-using AsyncInn.Models.Interfaces;
 
 namespace AsyncInn.Controllers
 {
     public class HotelRoomsController : Controller
     {
-        private IHotel _hotel;
-        private IRoom _room;
         private readonly AsyncInnDbContext _context;
 
-        public HotelRoomsController(IHotel hotel, IRoom room, AsyncInnDbContext context)
+        public HotelRoomsController(AsyncInnDbContext context)
         {
-            _hotel = hotel;
-            _room = room;
             _context = context;
         }
 
         // GET: HotelRooms
         public async Task<IActionResult> Index()
         {
-            return View(await _room.GetHotelRooms());
+            var asyncInnDbContext = _context.HotelRoom.Include(h => h.Hotel).Include(h => h.Room);
+            return View(await asyncInnDbContext.ToListAsync());
         }
 
         // GET: HotelRooms/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int? HotelID, int? RoomID)
         {
-            var hotelRoom = _room.GetHotelRoomsByRoom(id);
+            if (HotelID == null || RoomID == null)
+            {
+                return NotFound();
+            }
 
-            if (hotelRoom == null) return NotFound();
+            var hotelRoom = await _context.HotelRoom
+                .Include(h => h.Hotel)
+                .Include(h => h.Room)
+                .FirstOrDefaultAsync(m => m.RoomID == RoomID && m.HotelID == HotelID);
+            if (hotelRoom == null)
+            {
+                return NotFound();
+            }
 
             return View(hotelRoom);
         }
@@ -43,8 +49,8 @@ namespace AsyncInn.Controllers
         // GET: HotelRooms/Create
         public IActionResult Create()
         {
-            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "ID");
-            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "ID");
+            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "Address");
+            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "Name");
             return View();
         }
 
@@ -61,26 +67,30 @@ namespace AsyncInn.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "ID", hotelRoom.HotelID);
-            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "ID", hotelRoom.RoomID);
+            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "Address", hotelRoom.HotelID);
+            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "Name", hotelRoom.RoomID);
             return View(hotelRoom);
         }
 
         // GET: HotelRooms/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? RoomID, int? HotelID)
         {
-            if (id == null)
+            if (HotelID == null || RoomID == null)
             {
                 return NotFound();
             }
 
-            var hotelRoom = await _context.HotelRoom.FindAsync(id);
+            //var hotelRoom = await _context.HotelRooms.FindAsync(id);
+            var hotelRoom = await _context.HotelRoom
+                .Include(h => h.Hotel)
+                .Include(h => h.Room)
+                .FirstOrDefaultAsync(m => m.RoomID == RoomID && m.HotelID == HotelID);
             if (hotelRoom == null)
             {
                 return NotFound();
             }
-            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "ID", hotelRoom.HotelID);
-            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "ID", hotelRoom.RoomID);
+            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "Address", hotelRoom.HotelID);
+            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "Name", hotelRoom.RoomID);
             return View(hotelRoom);
         }
 
@@ -116,15 +126,15 @@ namespace AsyncInn.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "ID", hotelRoom.HotelID);
-            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "ID", hotelRoom.RoomID);
+            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "Address", hotelRoom.HotelID);
+            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "Name", hotelRoom.RoomID);
             return View(hotelRoom);
         }
 
         // GET: HotelRooms/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? HotelID, int? RoomID)
         {
-            if (id == null)
+            if (HotelID == null || RoomID == null)
             {
                 return NotFound();
             }
@@ -132,7 +142,7 @@ namespace AsyncInn.Controllers
             var hotelRoom = await _context.HotelRoom
                 .Include(h => h.Hotel)
                 .Include(h => h.Room)
-                .FirstOrDefaultAsync(m => m.RoomID == id);
+                .FirstOrDefaultAsync(m => m.RoomID == RoomID && m.HotelID == HotelID);
             if (hotelRoom == null)
             {
                 return NotFound();

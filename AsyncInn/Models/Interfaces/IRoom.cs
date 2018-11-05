@@ -7,27 +7,19 @@ namespace AsyncInn.Models.Interfaces
 {
     public interface IRoom
     {
+        //Create
         Task CreateRoom(Room room);
 
+        //Update
         Task UpdateRoom(Room room);
 
+        //Delete
         Task DeleteRoom(int id);
 
-        Task<List<Room>> GetRooms();
+        //Read all
+        Task<IEnumerable<Room>> GetRooms();
 
+        //Read one
         Task<Room> GetRoom(int? id);
-
-        //HotelRoom Methods
-        Task<List<HotelRoom>> GetHotelRooms();
-
-        Task<HotelRoom> GetHotelRoom(int? id);
-
-        IEnumerable<HotelRoom> GetHotelRoomsByRoom(int roomID);
-
-        Task CreateHotelRoom(HotelRoom hotelRoom);
-
-        Task UpdateHotelRoom(HotelRoom hotelRoom);
-
-        Task DeleteHotelRoom(int HotelID, int RoomNumber);
     }
 }

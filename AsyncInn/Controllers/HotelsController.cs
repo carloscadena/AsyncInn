@@ -45,7 +45,7 @@ namespace AsyncInn.Controllers
                 return NotFound();
             }
 
-            Hotel hotel = await _hotel.GetHotel(id);
+            var hotel = await _hotel.GetHotel(id);
 
             if (hotel == null)
             {

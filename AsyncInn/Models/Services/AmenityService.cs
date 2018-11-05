@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AsyncInn.Models.Services
 {
-    public class AmenityService: IAmenity
+    public class AmenityService : IAmenity
     {
         private AsyncInnDbContext _context;
 
@@ -17,33 +17,33 @@ namespace AsyncInn.Models.Services
             _context = context;
         }
 
-        public async Task CreateAmenity(Amenities hotel)
+        public async Task CreateAmenity(Amenities amenity)
         {
-            _context.Amenities.Add(hotel);
+            _context.Amenities.Add(amenity);
             await _context.SaveChangesAsync();
-
         }
 
         public async Task DeleteAmenity(int id)
         {
-            Amenities hotel = await GetAmenity(id);
-            _context.Amenities.Remove(hotel);
+            Amenities amenity = await GetAmenity(id);
+            _context.Amenities.Remove(amenity);
+
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Amenities> GetAmenity(int? id)
-        {
-            return await _context.Amenities.FirstOrDefaultAsync(x => x.ID == id);
-        }
-
-        public async Task<List<Amenities>> GetAmenities()
+        public async Task<IEnumerable<Amenities>> GetAmenities()
         {
             return await _context.Amenities.ToListAsync();
         }
 
-        public async Task UpdateAmenity(Amenities hotel)
+        public async Task<Amenities> GetAmenity(int? id)
         {
-            _context.Amenities.Update(hotel);
+            return await _context.Amenities.FirstOrDefaultAsync(a => a.ID == id);
+        }
+
+        public async Task UpdateAmenity(Amenities amenity)
+        {
+            _context.Amenities.Update(amenity);
             await _context.SaveChangesAsync();
         }
     }
