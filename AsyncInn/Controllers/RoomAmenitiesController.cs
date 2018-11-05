@@ -27,9 +27,9 @@ namespace AsyncInn.Controllers
         }
 
         // GET: RoomAmenities/Details/5
-        public async Task<IActionResult> Details(int? RoomID, int? AmenitiesID)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (RoomID == null || AmenitiesID == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -37,7 +37,7 @@ namespace AsyncInn.Controllers
             var roomAmenities = await _context.RoomAmenities
                 .Include(r => r.Amenities)
                 .Include(r => r.Room)
-                .FirstOrDefaultAsync(m => m.RoomID == RoomID && m.AmenitiesID == AmenitiesID);
+                .FirstOrDefaultAsync(m => m.AmenitiesID == id);
             if (roomAmenities == null)
             {
                 return NotFound();

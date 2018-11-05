@@ -7,41 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AsyncInn.Data;
 using AsyncInn.Models;
+using AsyncInn.Models.Interfaces;
 
 namespace AsyncInn.Controllers
 {
     public class HotelRoomsController : Controller
     {
+        private IHotel _hotel;
+        private IRoom _room;
         private readonly AsyncInnDbContext _context;
 
-        public HotelRoomsController(AsyncInnDbContext context)
+        public HotelRoomsController(IHotel hotel, IRoom room, AsyncInnDbContext context)
         {
+            _hotel = hotel;
+            _room = room;
             _context = context;
         }
 
         // GET: HotelRooms
         public async Task<IActionResult> Index()
         {
-            var asyncInnDbContext = _context.HotelRoom.Include(h => h.Hotel).Include(h => h.Room);
-            return View(await asyncInnDbContext.ToListAsync());
+            return View(await _room.GetHotelRooms());
         }
 
         // GET: HotelRooms/Details/5
-        public async Task<IActionResult> Details(int? HotelID, int? RoomID)
+        public IActionResult Details(int id)
         {
-            if (HotelID == null || RoomID == null)
-            {
-                return NotFound();
-            }
+            var hotelRoom = _room.GetHotelRoomsByRoom(id);
 
-            var hotelRoom = await _context.HotelRoom
-                .Include(h => h.Hotel)
-                .Include(h => h.Room)
-                .FirstOrDefaultAsync(m => m.RoomID == RoomID && m.HotelID == HotelID);
-            if (hotelRoom == null)
-            {
-                return NotFound();
-            }
+            if (hotelRoom == null) return NotFound();
 
             return View(hotelRoom);
         }
